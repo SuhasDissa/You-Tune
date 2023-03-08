@@ -19,7 +19,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.bnyro.recorder.R
 import com.bnyro.recorder.enums.RecorderState
 import com.bnyro.recorder.ui.common.ClickableIcon
-import com.bnyro.recorder.ui.components.AudioVisualizer
 import com.bnyro.recorder.ui.components.SettingsBottomSheet
 import com.bnyro.recorder.ui.models.RecorderModel
 import com.bnyro.recorder.ui.views.VideoView
@@ -61,25 +60,8 @@ fun RecorderView() {
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             if (currentVideo.value != Uri.EMPTY) {
-                Box(
-                    Modifier
-                        .fillMaxWidth()
-                ) {
+                Box {
                     VideoView(videoUri = currentVideo.value)
-                }
-            }
-            Box(
-                Modifier
-                    .fillMaxWidth()
-                    .weight(1f)
-            ) {
-                if (recorderModel.recordedAmplitudes.isNotEmpty()) {
-                    AudioVisualizer(
-                        modifier = Modifier
-                            .fillMaxSize()
-                    )
-                } else {
-                    Text(text = "Open A Video Or tap Record")
                 }
             }
             Column(
@@ -88,14 +70,12 @@ fun RecorderView() {
                     .padding(bottom = 40.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                recorderModel.recordedTime?.let {
-                    Text(
-                        text = DateUtils.formatElapsedTime(it),
-                        fontSize = MaterialTheme.typography.titleMedium.fontSize
-                    )
-                    Spacer(modifier = Modifier.height(20.dp))
-                }
 
+                Text(
+                    text = DateUtils.formatElapsedTime(recorderModel.recordedTime),
+                    style = MaterialTheme.typography.titleLarge
+                )
+                Spacer(modifier = Modifier.height(20.dp))
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {

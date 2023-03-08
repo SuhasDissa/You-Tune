@@ -16,14 +16,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.bnyro.recorder.R
-import com.bnyro.recorder.ui.dialogs.ConfirmationDialog
 import com.bnyro.recorder.ui.models.PlayerModel
 
 @Composable
-fun PlayerView(
-    showDeleteAllDialog: Boolean,
-    onDeleteAllDialogDismissed: () -> Unit
-) {
+fun PlayerView() {
     val playerModel: PlayerModel = viewModel()
     val context = LocalContext.current
 
@@ -60,18 +56,6 @@ fun PlayerView(
                     Spacer(modifier = Modifier.height(10.dp))
                     Text(text = stringResource(R.string.nothing_here))
                 }
-            }
-        }
-    }
-
-    if (showDeleteAllDialog) {
-        ConfirmationDialog(
-            title = R.string.delete_all,
-            onDismissRequest = onDeleteAllDialogDismissed
-        ) {
-            files.forEach {
-                it.delete()
-                playerModel.files.remove(it)
             }
         }
     }

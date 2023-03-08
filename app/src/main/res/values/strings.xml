@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">Record You</string>
+    <string name="app_name" translatable="false">You Tune</string>
 
     <string name="recordings">Recordings</string>
     <string name="okay">Okay</string>

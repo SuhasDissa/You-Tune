@@ -1,44 +1,79 @@
 package com.bnyro.recorder.services
 
+import android.app.Service
+import android.content.Intent
 import android.media.MediaRecorder
-import com.bnyro.recorder.R
-import com.bnyro.recorder.obj.AudioFormat
+import android.os.Binder
+import android.os.Build
+import android.os.ParcelFileDescriptor
+import androidx.annotation.RequiresApi
+import androidx.core.app.ServiceCompat
+import com.bnyro.recorder.enums.RecorderState
 import com.bnyro.recorder.util.PlayerHelper
-import com.bnyro.recorder.util.Preferences
 import com.bnyro.recorder.util.StorageHelper
 
-class AudioRecorderService : RecorderService() {
-    override val notificationTitle: String
-        get() = getString(R.string.recording_audio)
+class AudioRecorderService : Service() {
 
-    override fun start() {
-        val audioFormat = AudioFormat.getCurrent()
+    private val binder = LocalBinder()
+    var recorder: MediaRecorder? = null
+    var fileDescriptor: ParcelFileDescriptor? = null
+    private var recorderState: RecorderState = RecorderState.IDLE
+    var onRecorderStateChanged: (RecorderState) -> Unit = {}
+    inner class LocalBinder : Binder() {
+        // Return this instance of [BackgroundMode] so clients can call public methods
+        fun getService(): AudioRecorderService = this@AudioRecorderService
+    }
 
+    override fun onBind(intent: Intent?) = binder
+
+    fun start() {
         recorder = PlayerHelper.newRecorder(this).apply {
             setAudioSource(MediaRecorder.AudioSource.CAMCORDER)
+            setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
+            setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT)
 
-            Preferences.prefs.getInt(Preferences.audioSampleRateKey, -1).takeIf { it > 0 }?.let {
-                setAudioSamplingRate(it)
-                setAudioEncodingBitRate(it * 32 * 2)
-            }
-
-            setOutputFormat(audioFormat.format)
-            setAudioEncoder(audioFormat.codec)
-
-            outputFile = StorageHelper.getOutputFile(
-                this@AudioRecorderService,
-                audioFormat.extension
+           val outputFile = StorageHelper.getOutputFile(
+                this@AudioRecorderService, "m4a"
             )
-            fileDescriptor = contentResolver.openFileDescriptor(outputFile!!.uri, "w")
+            fileDescriptor = contentResolver.openFileDescriptor(outputFile.uri, "w")
             setOutputFile(fileDescriptor?.fileDescriptor)
 
-            runCatching {
-                prepare()
-            }
-
+            prepare()
             start()
         }
+        recorderState = RecorderState.ACTIVE
+        onRecorderStateChanged(recorderState)
 
-        super.start()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    fun pause() {
+        recorder?.pause()
+        recorderState = RecorderState.PAUSED
+        onRecorderStateChanged(recorderState)
+
+    }
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    fun resume() {
+        recorder?.resume()
+        recorderState = RecorderState.ACTIVE
+        onRecorderStateChanged(recorderState)
+
+    }
+
+    override fun onDestroy() {
+
+        recorderState = RecorderState.IDLE
+        onRecorderStateChanged(recorderState)
+
+        recorder?.stop()
+        recorder?.release()
+
+        recorder = null
+        fileDescriptor?.close()
+
+        ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)
+        super.onDestroy()
     }
 }

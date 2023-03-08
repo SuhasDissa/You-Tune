@@ -12,7 +12,6 @@ import androidx.compose.ui.unit.dp
 import com.bnyro.recorder.R
 import com.bnyro.recorder.util.Preferences
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomNumInputPref(
     key: String,

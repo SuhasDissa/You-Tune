@@ -6,7 +6,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Translate
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -29,11 +28,6 @@ fun AboutDialog(onDismissRequest: () -> Unit) {
     val actions = listOf(
         AboutItem(R.string.source_code, Icons.Default.Code, "https://github.com/Bnyro/RecordYou"),
         AboutItem(R.string.author, Icons.Default.Person, "https://github.com/Bnyro"),
-        AboutItem(
-            R.string.translation,
-            Icons.Default.Translate,
-            "https://hosted.weblate.org/projects/you-apps/record-you"
-        )
     )
 
     AlertDialog(

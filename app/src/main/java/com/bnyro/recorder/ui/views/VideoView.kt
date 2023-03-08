@@ -1,12 +1,15 @@
 package com.bnyro.recorder.ui.views
 
 import android.net.Uri
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.bnyro.recorder.enums.RecorderState
+import com.bnyro.recorder.ui.models.RecorderModel
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.ui.StyledPlayerView
@@ -14,7 +17,7 @@ import com.google.android.exoplayer2.ui.StyledPlayerView
 @Composable
 fun VideoView(videoUri: Uri) {
     val context = LocalContext.current
-
+    val recorderModel: RecorderModel = viewModel()
     val exoPlayer = ExoPlayer.Builder(context)
         .setUsePlatformDiagnostics(false)
         .build()
@@ -25,10 +28,14 @@ fun VideoView(videoUri: Uri) {
             exoPlayer.setMediaItem(mediaItem)
             exoPlayer.prepare()
         }
-
+    when (recorderModel.recorderState) {
+        RecorderState.ACTIVE -> exoPlayer.play()
+        RecorderState.IDLE -> exoPlayer.stop()
+        RecorderState.PAUSED -> exoPlayer.pause()
+    }
     DisposableEffect(
         AndroidView(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxWidth(),
             factory = {
                 StyledPlayerView(context).apply {
                     player = exoPlayer

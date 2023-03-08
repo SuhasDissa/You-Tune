@@ -21,7 +21,6 @@ import com.bnyro.recorder.ui.dialogs.ConfirmationDialog
 import com.bnyro.recorder.ui.models.PlayerModel
 import com.bnyro.recorder.util.IntentHelper
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RecordingItem(
     recordingFile: DocumentFile

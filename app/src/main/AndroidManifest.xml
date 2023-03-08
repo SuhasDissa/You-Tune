@@ -23,7 +23,6 @@
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -32,10 +31,6 @@
             android:name=".services.AudioRecorderService"
             android:exported="false" />
 
-        <receiver
-            android:name=".receivers.FinishedNotificationReceiver"
-            android:enabled="true"
-            android:exported="false" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

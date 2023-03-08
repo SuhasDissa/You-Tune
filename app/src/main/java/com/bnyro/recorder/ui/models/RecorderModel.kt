@@ -1,7 +1,6 @@
 package com.bnyro.recorder.ui.models
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -12,35 +11,30 @@ import android.os.IBinder
 import android.os.Looper
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import com.bnyro.recorder.enums.RecorderState
 import com.bnyro.recorder.services.AudioRecorderService
-import com.bnyro.recorder.services.RecorderService
 import com.bnyro.recorder.util.PermissionHelper
 
 class RecorderModel : ViewModel() {
     private val audioPermission = arrayOf(Manifest.permission.RECORD_AUDIO)
 
     var recorderState by mutableStateOf(RecorderState.IDLE)
-    var recordedTime by mutableStateOf<Long?>(null)
-    val recordedAmplitudes = mutableStateListOf<Int>()
+    var recordedTime by mutableStateOf(0L)
 
     private val handler = Handler(Looper.getMainLooper())
 
-    @SuppressLint("StaticFieldLeak")
-    private var recorderService: RecorderService? = null
+    private var recorderService: AudioRecorderService? = null
 
     private val connection = object : ServiceConnection {
         override fun onServiceConnected(className: ComponentName, service: IBinder) {
-            recorderService = (service as RecorderService.LocalBinder).getService()
+            recorderService = (service as AudioRecorderService.LocalBinder).getService()
             recorderService?.onRecorderStateChanged = {
                 recorderState = it
             }
-            //(recorderService as? ScreenRecorderService)?.prepare(activityResult!!)
             recorderService?.start()
         }
 
@@ -55,8 +49,8 @@ class RecorderModel : ViewModel() {
         val serviceIntent = Intent(context, AudioRecorderService::class.java)
         startRecorderService(context, serviceIntent)
 
-        startElapsedTimeCounter()
-        handler.postDelayed(this::updateAmplitude, 100)
+        recordedTime = 0L
+        handler.postDelayed(this::updateTime, 1000)
     }
 
     private fun startRecorderService(context: Context, intent: Intent) {
@@ -74,8 +68,7 @@ class RecorderModel : ViewModel() {
 
     fun stopRecording() {
         recorderService?.onDestroy()
-        recordedTime = null
-        recordedAmplitudes.clear()
+        recordedTime = 0L
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -87,31 +80,11 @@ class RecorderModel : ViewModel() {
     fun resumeRecording() {
         recorderService?.resume()
         handler.postDelayed(this::updateTime, 1000)
-        if (recorderService is AudioRecorderService) {
-            handler.postDelayed(this::updateAmplitude, 100)
-        }
     }
 
     private fun updateTime() {
         if (recorderState != RecorderState.ACTIVE) return
-
-        recordedTime = recordedTime?.plus(1)
-        handler.postDelayed(this::updateTime, 1000)
-    }
-
-    private fun updateAmplitude() {
-        if (recorderState != RecorderState.ACTIVE) return
-
-        recorderService?.recorder?.maxAmplitude?.let {
-            if (recordedAmplitudes.size >= 90) recordedAmplitudes.removeAt(0)
-            recordedAmplitudes.add(it)
-        }
-
-        handler.postDelayed(this::updateAmplitude, 100)
-    }
-
-    private fun startElapsedTimeCounter() {
-        recordedTime = 0L
+        recordedTime++
         handler.postDelayed(this::updateTime, 1000)
     }
 }
