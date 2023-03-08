@@ -1,85 +1,73 @@
 package com.bnyro.recorder.ui.models
 
 import android.Manifest
-import android.content.ComponentName
-import android.content.Context
-import android.content.Intent
-import android.content.ServiceConnection
-import android.os.Build
-import android.os.Handler
-import android.os.IBinder
-import android.os.Looper
+import android.content.*
+import android.media.MediaRecorder
+import android.os.*
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import com.bnyro.recorder.enums.RecorderState
-import com.bnyro.recorder.services.AudioRecorderService
 import com.bnyro.recorder.util.PermissionHelper
+import com.bnyro.recorder.util.PlayerHelper
+import com.bnyro.recorder.util.StorageHelper
 
 class RecorderModel : ViewModel() {
     private val audioPermission = arrayOf(Manifest.permission.RECORD_AUDIO)
+    var recorder: MediaRecorder? = null
 
     var recorderState by mutableStateOf(RecorderState.IDLE)
     var recordedTime by mutableStateOf(0L)
 
+    var onStateChange: (RecorderState) -> Unit = {}
+
     private val handler = Handler(Looper.getMainLooper())
-
-    private var recorderService: AudioRecorderService? = null
-
-    private val connection = object : ServiceConnection {
-        override fun onServiceConnected(className: ComponentName, service: IBinder) {
-            recorderService = (service as AudioRecorderService.LocalBinder).getService()
-            recorderService?.onRecorderStateChanged = {
-                recorderState = it
-            }
-            recorderService?.start()
-        }
-
-        override fun onServiceDisconnected(arg0: ComponentName) {
-            recorderService = null
-        }
-    }
 
     fun startAudioRecorder(context: Context) {
         if (!PermissionHelper.checkPermissions(context, audioPermission)) return
 
-        val serviceIntent = Intent(context, AudioRecorderService::class.java)
-        startRecorderService(context, serviceIntent)
+        recorder = PlayerHelper.newRecorder(context).apply {
+            setAudioSource(MediaRecorder.AudioSource.CAMCORDER)
+            setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
+            setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT)
+            setOutputFile(StorageHelper.getOutputFile(context, "m4a"))
+
+            prepare()
+            start()
+        }
+        recorderState = RecorderState.ACTIVE
+        onStateChange(recorderState)
 
         recordedTime = 0L
         handler.postDelayed(this::updateTime, 1000)
     }
 
-    private fun startRecorderService(context: Context, intent: Intent) {
-        runCatching {
-            context.unbindService(connection)
-        }
-        listOf(AudioRecorderService::class.java).forEach {
-            runCatching {
-                context.stopService(Intent(context, it))
-            }
-        }
-        ContextCompat.startForegroundService(context, intent)
-        context.bindService(intent, connection, Context.BIND_AUTO_CREATE)
-    }
-
     fun stopRecording() {
-        recorderService?.onDestroy()
+        recorderState = RecorderState.IDLE
+        onStateChange(recorderState)
+
+        recorder?.stop()
+        recorder?.reset()
+        recorder?.release()
+        recorder = null
         recordedTime = 0L
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
     fun pauseRecording() {
-        recorderService?.pause()
+        recorder?.pause()
+        recorderState = RecorderState.PAUSED
+        onStateChange(recorderState)
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
     fun resumeRecording() {
-        recorderService?.resume()
+        recorder?.resume()
+        recorderState = RecorderState.ACTIVE
         handler.postDelayed(this::updateTime, 1000)
+        onStateChange(recorderState)
     }
 
     private fun updateTime() {

@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
@@ -18,20 +19,25 @@ import com.google.android.exoplayer2.ui.StyledPlayerView
 fun VideoView(videoUri: Uri) {
     val context = LocalContext.current
     val recorderModel: RecorderModel = viewModel()
-    val exoPlayer = ExoPlayer.Builder(context)
-        .setUsePlatformDiagnostics(false)
-        .build()
-        .also { exoPlayer ->
-            val mediaItem = MediaItem.Builder()
-                .setUri(videoUri)
-                .build()
-            exoPlayer.setMediaItem(mediaItem)
-            exoPlayer.prepare()
+    val exoPlayer = remember(context) {
+        ExoPlayer.Builder(context)
+            .setUsePlatformDiagnostics(false)
+            .build()
+            .also { exoPlayer ->
+                val mediaItem = MediaItem.Builder()
+                    .setUri(videoUri)
+                    .build()
+                exoPlayer.setMediaItem(mediaItem)
+                exoPlayer.prepare()
+            }
+    }
+
+    recorderModel.onStateChange = {
+        when (it) {
+            RecorderState.ACTIVE -> exoPlayer.play()
+            RecorderState.IDLE -> exoPlayer.pause()
+            RecorderState.PAUSED -> exoPlayer.pause()
         }
-    when (recorderModel.recorderState) {
-        RecorderState.ACTIVE -> exoPlayer.play()
-        RecorderState.IDLE -> exoPlayer.stop()
-        RecorderState.PAUSED -> exoPlayer.pause()
     }
     DisposableEffect(
         AndroidView(

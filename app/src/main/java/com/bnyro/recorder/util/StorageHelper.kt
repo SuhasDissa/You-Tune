@@ -11,13 +11,11 @@ object StorageHelper {
     @SuppressLint("SimpleDateFormat")
     private val dateTimeFormat = SimpleDateFormat("yyyy-MM-dd_HH-mm-ss")
 
-    fun getOutputFile(context: Context, extension: String): DocumentFile {
+    fun getOutputFile(context: Context, extension: String): String {
         val currentTime = dateTimeFormat.format(Calendar.getInstance().time)
-
-        val recordingFile = getOutputDir(context).createFile("audio/*", "$currentTime.$extension")
-        return recordingFile!!
+        val dir = context.getExternalFilesDir(null) ?: context.filesDir
+        return dir.absolutePath + "/$currentTime.$extension"
     }
-
     fun getOutputDir(context: Context): DocumentFile {
         val prefDir = Preferences.prefs.getString(Preferences.targetFolderKey, "")
         val audioDir = when {
