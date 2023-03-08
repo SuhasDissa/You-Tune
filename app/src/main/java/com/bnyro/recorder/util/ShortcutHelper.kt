@@ -19,6 +19,7 @@ object ShortcutHelper {
         object RecordAudio : AppShortcut("audio", R.drawable.ic_audio, R.string.record_sound)
         object RecordScreen : AppShortcut("screen", R.drawable.ic_screen, R.string.record_screen)
     }
+
     private val shortcuts = listOf(AppShortcut.RecordAudio, AppShortcut.RecordScreen)
 
     private fun createShortcut(context: Context, action: String, label: String, icon: IconCompat) {

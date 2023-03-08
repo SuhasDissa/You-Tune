@@ -26,9 +26,7 @@ fun AudioVisualizer(
     val maxAmplitude = 3000
 
     LazyRow(
-        modifier = modifier,
-        state = state,
-        verticalAlignment = Alignment.CenterVertically
+        modifier = modifier, state = state, verticalAlignment = Alignment.CenterVertically
     ) {
         items(viewModel.recordedAmplitudes) {
             val height = clamp(5f, (150 * (it.toFloat() / maxAmplitude)), 150f)

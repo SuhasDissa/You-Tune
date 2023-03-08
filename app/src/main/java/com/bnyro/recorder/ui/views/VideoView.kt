@@ -24,7 +24,6 @@ fun VideoView(videoUri: Uri) {
                 .build()
             exoPlayer.setMediaItem(mediaItem)
             exoPlayer.prepare()
-            exoPlayer.playWhenReady = true
         }
 
     DisposableEffect(
@@ -35,6 +34,8 @@ fun VideoView(videoUri: Uri) {
                     player = exoPlayer
                     setShowNextButton(false)
                     setShowPreviousButton(false)
+                    setShowFastForwardButton(false)
+                    setShowRewindButton(false)
                 }
             }
         )

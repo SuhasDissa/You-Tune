@@ -10,7 +10,6 @@ import android.os.Build
 import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
-import androidx.activity.result.ActivityResult
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -18,13 +17,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
-import com.bnyro.recorder.enums.AudioSource
 import com.bnyro.recorder.enums.RecorderState
 import com.bnyro.recorder.services.AudioRecorderService
 import com.bnyro.recorder.services.RecorderService
-import com.bnyro.recorder.services.ScreenRecorderService
 import com.bnyro.recorder.util.PermissionHelper
-import com.bnyro.recorder.util.Preferences
 
 class RecorderModel : ViewModel() {
     private val audioPermission = arrayOf(Manifest.permission.RECORD_AUDIO)
@@ -32,7 +28,6 @@ class RecorderModel : ViewModel() {
     var recorderState by mutableStateOf(RecorderState.IDLE)
     var recordedTime by mutableStateOf<Long?>(null)
     val recordedAmplitudes = mutableStateListOf<Int>()
-    private var activityResult: ActivityResult? = null
 
     private val handler = Handler(Looper.getMainLooper())
 
@@ -45,21 +40,13 @@ class RecorderModel : ViewModel() {
             recorderService?.onRecorderStateChanged = {
                 recorderState = it
             }
-            (recorderService as? ScreenRecorderService)?.prepare(activityResult!!)
+            //(recorderService as? ScreenRecorderService)?.prepare(activityResult!!)
             recorderService?.start()
         }
 
         override fun onServiceDisconnected(arg0: ComponentName) {
             recorderService = null
         }
-    }
-
-    fun startVideoRecorder(context: Context, result: ActivityResult) {
-        activityResult = result
-        val serviceIntent = Intent(context, ScreenRecorderService::class.java)
-        startRecorderService(context, serviceIntent)
-
-        startElapsedTimeCounter()
     }
 
     fun startAudioRecorder(context: Context) {
@@ -76,7 +63,7 @@ class RecorderModel : ViewModel() {
         runCatching {
             context.unbindService(connection)
         }
-        listOf(AudioRecorderService::class.java, ScreenRecorderService::class.java).forEach {
+        listOf(AudioRecorderService::class.java).forEach {
             runCatching {
                 context.stopService(Intent(context, it))
             }
@@ -126,20 +113,5 @@ class RecorderModel : ViewModel() {
     private fun startElapsedTimeCounter() {
         recordedTime = 0L
         handler.postDelayed(this::updateTime, 1000)
-    }
-
-    fun hasScreenRecordingPermissions(context: Context): Boolean {
-        val requiredPermissions = arrayListOf<String>()
-
-        val recordAudio = Preferences.prefs.getInt(Preferences.audioSourceKey, 0) == AudioSource.MICROPHONE.value
-
-        if (recordAudio) requiredPermissions.add(Manifest.permission.RECORD_AUDIO)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            requiredPermissions.add(Manifest.permission.POST_NOTIFICATIONS)
-        }
-
-        if (requiredPermissions.isEmpty()) return true
-
-        return PermissionHelper.checkPermissions(context, requiredPermissions.toTypedArray())
     }
 }

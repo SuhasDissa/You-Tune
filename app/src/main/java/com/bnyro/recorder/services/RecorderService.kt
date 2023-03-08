@@ -126,12 +126,13 @@ abstract class RecorderService : Service() {
         )
     }
 
-    private fun getPendingIntent(intent: Intent, requestCode: Int): PendingIntent = PendingIntent.getBroadcast(
-        this,
-        requestCode,
-        intent,
-        PendingIntent.FLAG_IMMUTABLE
-    )
+    private fun getPendingIntent(intent: Intent, requestCode: Int): PendingIntent =
+        PendingIntent.getBroadcast(
+            this,
+            requestCode,
+            intent,
+            PendingIntent.FLAG_IMMUTABLE
+        )
 
     open fun start() {
         runCatching {
@@ -201,17 +202,6 @@ abstract class RecorderService : Service() {
                     outputFile?.name.toString()
                 ).putExtra(ACTION_EXTRA_KEY, DELETE_ACTION),
                 4
-            )
-        )
-        val shareAction = NotificationCompat.Action.Builder(
-            null,
-            getString(R.string.share),
-            getPendingIntent(
-                Intent(this, FinishedNotificationReceiver::class.java).putExtra(
-                    FILE_NAME_EXTRA_KEY,
-                    outputFile?.name.toString()
-                ).putExtra(ACTION_EXTRA_KEY, SHARE_ACTION),
-                5
             )
         )
 

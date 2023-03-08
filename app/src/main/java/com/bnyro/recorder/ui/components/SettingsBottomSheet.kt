@@ -2,12 +2,7 @@ package com.bnyro.recorder.ui.components
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.Info
@@ -28,9 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.bnyro.recorder.R
-import com.bnyro.recorder.enums.AudioSource
 import com.bnyro.recorder.enums.ThemeMode
-import com.bnyro.recorder.enums.VideoFormat
 import com.bnyro.recorder.obj.AudioFormat
 import com.bnyro.recorder.ui.common.ChipSelector
 import com.bnyro.recorder.ui.common.ClickableIcon
@@ -50,14 +43,6 @@ fun SettingsBottomSheet(
 
     var audioFormat by remember {
         mutableStateOf(AudioFormat.getCurrent())
-    }
-    var screenAudioSource by remember {
-        mutableStateOf(
-            AudioSource.fromInt(Preferences.prefs.getInt(Preferences.audioSourceKey, 0))
-        )
-    }
-    var videoEncoder by remember {
-        mutableStateOf(VideoFormat.getCurrent())
     }
 
     val directoryPicker = rememberLauncherForActivityResult(PickFolderContract()) {
@@ -129,37 +114,6 @@ fun SettingsBottomSheet(
                     key = Preferences.audioSampleRateKey,
                     title = stringResource(R.string.sample_rate),
                     defValue = 44_100
-                )
-                Spacer(modifier = Modifier.height(10.dp))
-                val audioValues = AudioSource.values().map { it.value }
-                ChipSelector(
-                    title = stringResource(R.string.screen_recorder),
-                    entries = listOf(R.string.no_audio, R.string.microphone).map {
-                        stringResource(it)
-                    },
-                    values = audioValues,
-                    selections = listOf(screenAudioSource.value)
-                ) { index, newValue ->
-                    if (newValue) {
-                        screenAudioSource = AudioSource.fromInt(audioValues[index])
-                        Preferences.edit { putInt(Preferences.audioSourceKey, audioValues[index]) }
-                    }
-                }
-                ChipSelector(
-                    entries = VideoFormat.codecs.map { it.name },
-                    values = VideoFormat.codecs.map { it.codec },
-                    selections = listOf(videoEncoder.codec)
-                ) { index, newValue ->
-                    if (newValue) {
-                        videoEncoder = VideoFormat.codecs[index]
-                        Preferences.edit { putInt(Preferences.videoCodecKey, videoEncoder.codec) }
-                    }
-                }
-                Spacer(modifier = Modifier.height(10.dp))
-                CustomNumInputPref(
-                    key = Preferences.videoBitrateKey,
-                    title = stringResource(R.string.bitrate),
-                    defValue = 1_200_000
                 )
             }
         }

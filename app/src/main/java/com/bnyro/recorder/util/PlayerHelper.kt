@@ -14,6 +14,7 @@ object PlayerHelper {
             (MediaRecorder())
         }
     }
+
     fun getAudioAttributes(): AudioAttributes = AudioAttributes.Builder()
         .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
         .setUsage(AudioAttributes.USAGE_MEDIA)

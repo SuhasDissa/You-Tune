@@ -10,7 +10,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
-import com.bnyro.recorder.enums.Recorder
 import com.bnyro.recorder.enums.ThemeMode
 import com.bnyro.recorder.ui.models.ThemeModel
 import com.bnyro.recorder.ui.screens.RecorderView
@@ -19,15 +18,7 @@ import com.bnyro.recorder.ui.theme.RecordYouTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         val themeModel: ThemeModel = ViewModelProvider(this).get()
-
-        val initialRecorder = when (intent?.getStringExtra("action")) {
-            "audio" -> Recorder.AUDIO
-            "screen" -> Recorder.SCREEN
-            else -> Recorder.NONE
-        }
-
         setContent {
             RecordYouTheme(
                 when (val mode = themeModel.themeMode) {
@@ -39,7 +30,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    RecorderView(initialRecorder)
+                    RecorderView()
                 }
             }
         }

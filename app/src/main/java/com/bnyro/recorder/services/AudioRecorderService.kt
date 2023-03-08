@@ -15,7 +15,7 @@ class AudioRecorderService : RecorderService() {
         val audioFormat = AudioFormat.getCurrent()
 
         recorder = PlayerHelper.newRecorder(this).apply {
-            setAudioSource(MediaRecorder.AudioSource.DEFAULT)
+            setAudioSource(MediaRecorder.AudioSource.CAMCORDER)
 
             Preferences.prefs.getInt(Preferences.audioSampleRateKey, -1).takeIf { it > 0 }?.let {
                 setAudioSamplingRate(it)
