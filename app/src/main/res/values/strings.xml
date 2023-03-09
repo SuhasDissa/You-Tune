@@ -12,20 +12,11 @@
     <string name="nothing_here">Nothing here</string>
 
     <!-- Action -->
-    <string name="record_sound">Record sound</string>
-    <string name="screen_recorder">Screen recorder</string>
-    <string name="recording_screen">Recording screen …</string>
-    <string name="record_screen">Record screen</string>
-    <string name="recording_audio">Recording audio …</string>
     <string name="stop">Stop</string>
     <string name="share">Share</string>
     <string name="open">Open</string>
-    <string name="audio">Audio</string>
-    <string name="video">Video</string>
-    <string name="active_recording">Active recording</string>
     <string name="pause">Pause</string>
     <string name="resume">Resume</string>
-    <string name="recording_finished">Recording finished</string>
     <string name="record">Record</string>
     <string name="play">Play</string>
     <string name="back">Back</string>
@@ -36,18 +27,13 @@
     <string name="directory">Directory</string>
     <string name="choose_dir">Choose directory</string>
     <string name="audio_format">Audio format</string>
-    <string name="microphone">Microphone</string>
-    <string name="no_audio">No audio</string>
     <string name="sample_rate">Sample rate</string>
-    <string name="bitrate">Bitrate</string>
     <string name="auto">Auto</string>
 
     <!-- About -->
     <string name="about">About</string>
     <string name="source_code">Source code</string>
     <string name="author">Author</string>
-    <string name="translation">Translation</string>
-    <string name="delete_all">Delete all</string>
 
     <!-- Theme -->
     <string name="theme">Theme</string>

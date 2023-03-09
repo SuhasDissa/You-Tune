@@ -1,6 +1,6 @@
 <!-- ---------- Header ---------- -->
 <div align="center">
-  <img width="200" height="200"src="app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png">
+  <img width="200" height="200"src="ic_launcher_round.png">
   <h1>Record You</h1>
 <p><a href="https://m3.material.io/">Material Design 3 (You)</a> voice and screen recorder app</p>
 
