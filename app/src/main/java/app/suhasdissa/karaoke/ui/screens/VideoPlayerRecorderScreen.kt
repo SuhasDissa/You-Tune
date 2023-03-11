@@ -55,7 +55,7 @@ fun VideoPlayerRecorderScreen(
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             if (videoPlayerModel.vidUri != Uri.EMPTY) {
-                Box {
+                Box(Modifier.heightIn(0.dp,250.dp)) {
                     VideoPlayer(videoUri = videoPlayerModel.vidUri)
                 }
             }

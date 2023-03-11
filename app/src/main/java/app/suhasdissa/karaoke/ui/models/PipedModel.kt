@@ -14,9 +14,10 @@ class PipedModel : ViewModel() {
         data class Success(val items: ArrayList<Items>) : PipedSearchState
         data class Error(val error: String) : PipedSearchState
         object Loading : PipedSearchState
+        object Empty : PipedSearchState
     }
 
-    var state: PipedSearchState by mutableStateOf(PipedSearchState.Error("Search For a video"))
+    var state: PipedSearchState by mutableStateOf(PipedSearchState.Empty)
     var suggestions: List<String> by mutableStateOf(arrayListOf())
 
     fun getSuggestions(query: String) {

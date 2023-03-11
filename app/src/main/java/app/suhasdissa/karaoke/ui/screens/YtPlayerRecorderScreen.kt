@@ -48,17 +48,19 @@ fun YtPlayerRecorderScreen(
         ) {
             when (val streamState = pipedStreamModel.state) {
                 is PipedStreamModel.VideoStreamState.Error -> {
-                    ErrorScreen(error = streamState.error)
+                    ErrorScreen(
+                        error = streamState.error,
+                        onRetry = { pipedStreamModel.getStreams(vidId) })
                 }
                 is PipedStreamModel.VideoStreamState.Loading -> {
                     LoadingScreen()
                 }
                 is PipedStreamModel.VideoStreamState.Success -> {
-                    Box {
+                    Box(Modifier.heightIn(0.dp,250.dp)) {
                         if (streamState.response.hls != null) {
                             VideoPlayer(videoUri = streamState.response.hls!!.toUri())
                         } else {
-                            ErrorScreen(error = "Video Playback Error")
+                            ErrorScreen(error = "Video Playback Error", onRetry = {})
                         }
                     }
                     Column(

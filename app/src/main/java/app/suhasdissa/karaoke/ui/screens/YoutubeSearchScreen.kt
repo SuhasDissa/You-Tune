@@ -16,7 +16,6 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -25,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import app.suhasdissa.karaoke.backend.serializables.Items
 import app.suhasdissa.karaoke.ui.components.ErrorScreen
+import app.suhasdissa.karaoke.ui.components.InfoScreen
 import app.suhasdissa.karaoke.ui.components.LoadingScreen
 import app.suhasdissa.karaoke.ui.models.PipedModel
 import coil.compose.AsyncImage
@@ -40,7 +40,6 @@ fun YoutubeSearchScreen(
 ) {
     val search = remember { mutableStateOf(TextFieldValue("")) }
     val focusRequester = remember { FocusRequester() }
-    val showSuggestions = remember { mutableStateOf(true) }
     val keyboard = LocalSoftwareKeyboardController.current
     LaunchedEffect(focusRequester) {
         focusRequester.requestFocus()
@@ -59,22 +58,24 @@ fun YoutubeSearchScreen(
                 },
                 modifier
                     .weight(1f)
-                    .focusRequester(focusRequester)
-                    .onFocusChanged { showSuggestions.value = true },
+                    .focusRequester(focusRequester),
+
                 singleLine = true,
                 placeholder = { Text("Search Songs") },
                 shape = CircleShape
             )
             Button(onClick = {
                 keyboard?.hide()
-                pipedModel.searchPiped(search.value.text)
-                showSuggestions.value = false
+                if (search.value.text.isNotEmpty()) {
+                    pipedModel.searchPiped(search.value.text)
+                }
+                pipedModel.suggestions = arrayListOf()
             }) {
                 Text("Search")
             }
         }
 
-        if (showSuggestions.value && pipedModel.suggestions.isNotEmpty()) {
+        if (search.value.text.isNotEmpty() && pipedModel.suggestions.isNotEmpty()) {
             LazyColumn(Modifier.fillMaxWidth()) {
                 items(items = pipedModel.suggestions) { suggestion ->
                     Box(
@@ -93,10 +94,17 @@ fun YoutubeSearchScreen(
                 LoadingScreen()
             }
             is PipedModel.PipedSearchState.Error -> {
-                ErrorScreen(error = searchState.error)
+                ErrorScreen(error = searchState.error, onRetry = {
+                    if (search.value.text.isNotEmpty()) {
+                        pipedModel.searchPiped(search.value.text)
+                    }
+                })
             }
             is PipedModel.PipedSearchState.Success -> {
                 VideoList(items = searchState.items, onClickVideoCard = { onClickVideoCard(it) })
+            }
+            is PipedModel.PipedSearchState.Empty -> {
+                InfoScreen(info = "Search For Video")
             }
         }
     }
