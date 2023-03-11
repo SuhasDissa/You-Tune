@@ -13,32 +13,26 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import app.suhasdissa.karaoke.R
-import app.suhasdissa.karaoke.ui.common.FullscreenDialog
 import app.suhasdissa.karaoke.ui.components.PlayerView
 
 @Composable
-fun PlayerScreen(
-    onDismissRequest: () -> Unit
-) {
+fun PlayerScreen() {
     val orientation = LocalConfiguration.current.orientation
 
-    FullscreenDialog(
-        title = stringResource(R.string.recordings), onDismissRequest = onDismissRequest
+    Column(
+        modifier = Modifier.padding(
+            horizontal = 20.dp
+        )
     ) {
-        Column(
-            modifier = Modifier.padding(
-                horizontal = 20.dp
+        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+            Spacer(modifier = Modifier.height(70.dp))
+            Text(
+                text = stringResource(R.string.recordings),
+                fontSize = MaterialTheme.typography.headlineMedium.fontSize
             )
-        ) {
-            if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-                Spacer(modifier = Modifier.height(70.dp))
-                Text(
-                    text = stringResource(R.string.recordings),
-                    fontSize = MaterialTheme.typography.headlineMedium.fontSize
-                )
-                Spacer(modifier = Modifier.height(15.dp))
-            }
-            PlayerView()
+            Spacer(modifier = Modifier.height(15.dp))
         }
+        PlayerView()
     }
+
 }

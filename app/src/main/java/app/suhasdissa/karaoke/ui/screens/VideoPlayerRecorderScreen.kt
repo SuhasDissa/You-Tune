@@ -7,9 +7,13 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.Mic
+import androidx.compose.material.icons.filled.Pause
+import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Stop
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -19,38 +23,29 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import app.suhasdissa.karaoke.R
 import app.suhasdissa.karaoke.enums.RecorderState
 import app.suhasdissa.karaoke.ui.common.ClickableIcon
-import app.suhasdissa.karaoke.ui.components.SettingsBottomSheet
+import app.suhasdissa.karaoke.ui.components.VideoPlayer
 import app.suhasdissa.karaoke.ui.models.RecorderModel
-import app.suhasdissa.karaoke.ui.views.VideoView
+import app.suhasdissa.karaoke.ui.models.VideoPlayerModel
 
 @Composable
-fun RecorderView() {
-    val currentVideo = remember {
-        mutableStateOf(Uri.EMPTY)
-    }
-    val recorderModel: RecorderModel = viewModel()
+fun VideoPlayerRecorderScreen(
+    videoPlayerModel: VideoPlayerModel = viewModel(),
+    recorderModel: RecorderModel = viewModel()
+) {
     val context = LocalContext.current
 
     val pickVideo = rememberLauncherForActivityResult(
         ActivityResultContracts.GetContent()
     ) { videoUri ->
         if (videoUri != null) {
-            currentVideo.value = videoUri
+            videoPlayerModel.vidUri = videoUri
         }
     }
-    var showBottomSheet by remember {
-        mutableStateOf(false)
-    }
-    var showPlayerScreen by remember {
-        mutableStateOf(false)
-    }
-    LaunchedEffect(recorderModel.recorderState) {
-        // update the UI when the recorder gets destroyed by the notification
-        if (recorderModel.recorderState == RecorderState.IDLE) {
-            recorderModel.stopRecording()
+    LaunchedEffect(Unit) {
+        if (videoPlayerModel.vidUri == Uri.EMPTY) {
+            pickVideo.launch("video/*")
         }
     }
-
     Scaffold { pV ->
         Column(
             modifier = Modifier
@@ -59,9 +54,9 @@ fun RecorderView() {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween
         ) {
-            if (currentVideo.value != Uri.EMPTY) {
+            if (videoPlayerModel.vidUri != Uri.EMPTY) {
                 Box {
-                    VideoView(videoUri = currentVideo.value)
+                    VideoPlayer(videoUri = videoPlayerModel.vidUri)
                 }
             }
             Column(
@@ -79,15 +74,6 @@ fun RecorderView() {
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    ClickableIcon(
-                        imageVector = Icons.Default.FileOpen,
-                        contentDescription = stringResource(R.string.settings)
-                    ) {
-                        //showBottomSheet = true
-                        pickVideo.launch("video/*")
-                    }
-
-                    Spacer(modifier = Modifier.width(20.dp))
 
                     FloatingActionButton(onClick = {
                         when {
@@ -109,9 +95,8 @@ fun RecorderView() {
                         )
                     }
 
-                    Spacer(modifier = Modifier.width(20.dp))
-
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && recorderModel.recorderState != RecorderState.IDLE) {
+                        Spacer(modifier = Modifier.width(20.dp))
                         ClickableIcon(
                             imageVector = if (recorderModel.recorderState == RecorderState.PAUSED) {
                                 Icons.Default.PlayArrow
@@ -131,28 +116,10 @@ fun RecorderView() {
                                 recorderModel.pauseRecording()
                             }
                         }
-                    } else {
-                        ClickableIcon(
-                            imageVector = Icons.Default.LibraryMusic,
-                            contentDescription = stringResource(R.string.recordings)
-                        ) {
-                            showPlayerScreen = true
-                        }
                     }
                 }
             }
 
-        }
-    }
-
-    if (showBottomSheet) {
-        SettingsBottomSheet {
-            showBottomSheet = false
-        }
-    }
-    if (showPlayerScreen) {
-        PlayerScreen {
-            showPlayerScreen = false
         }
     }
 }

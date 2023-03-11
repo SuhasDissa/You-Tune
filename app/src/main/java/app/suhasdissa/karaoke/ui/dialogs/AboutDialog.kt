@@ -14,11 +14,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import app.suhasdissa.karaoke.BuildConfig
 import app.suhasdissa.karaoke.R
 import app.suhasdissa.karaoke.obj.AboutItem
 import app.suhasdissa.karaoke.ui.common.DialogButton
 import app.suhasdissa.karaoke.util.IntentHelper
-import app.suhasdissa.karaoke.BuildConfig
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

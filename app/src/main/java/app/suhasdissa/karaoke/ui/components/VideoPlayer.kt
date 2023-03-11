@@ -1,4 +1,4 @@
-package app.suhasdissa.karaoke.ui.views
+package app.suhasdissa.karaoke.ui.components
 
 import android.net.Uri
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,9 +16,8 @@ import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.ui.StyledPlayerView
 
 @Composable
-fun VideoView(videoUri: Uri) {
+fun VideoPlayer(videoUri: Uri, recorderModel: RecorderModel = viewModel()) {
     val context = LocalContext.current
-    val recorderModel: RecorderModel = viewModel()
     val exoPlayer = remember(context) {
         ExoPlayer.Builder(context)
             .setUsePlatformDiagnostics(false)
@@ -35,7 +34,10 @@ fun VideoView(videoUri: Uri) {
     recorderModel.onStateChange = {
         when (it) {
             RecorderState.ACTIVE -> exoPlayer.play()
-            RecorderState.IDLE -> exoPlayer.pause()
+            RecorderState.IDLE -> {
+                exoPlayer.pause()
+                exoPlayer.seekTo(0)
+            }
             RecorderState.PAUSED -> exoPlayer.pause()
         }
     }
@@ -49,9 +51,11 @@ fun VideoView(videoUri: Uri) {
                     setShowPreviousButton(false)
                     setShowFastForwardButton(false)
                     setShowRewindButton(false)
+                    controllerAutoShow = false
                 }
             }
         )
+
     ) {
         onDispose { exoPlayer.release() }
     }

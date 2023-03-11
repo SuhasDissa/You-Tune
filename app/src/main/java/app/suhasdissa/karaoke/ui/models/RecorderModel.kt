@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.*
 import android.media.MediaRecorder
 import android.os.*
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -44,7 +45,7 @@ class RecorderModel : ViewModel() {
         handler.postDelayed(this::updateTime, 1000)
     }
 
-    fun stopRecording() {
+    fun stopRecording(context: Context? = null) {
         recorderState = RecorderState.IDLE
         onStateChange(recorderState)
 
@@ -53,6 +54,9 @@ class RecorderModel : ViewModel() {
         recorder?.release()
         recorder = null
         recordedTime = 0L
+        if (context != null) {
+            Toast.makeText(context, "Recording Stopped", Toast.LENGTH_SHORT).show()
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.N)

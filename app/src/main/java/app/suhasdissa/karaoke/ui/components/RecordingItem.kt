@@ -2,6 +2,7 @@ package app.suhasdissa.karaoke.ui.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
@@ -71,6 +72,12 @@ fun RecordingItem(
                     isPlaying = false
                 }
             }
+            ClickableIcon(
+                imageVector = Icons.Default.Delete,
+                contentDescription = stringResource(R.string.options)
+            ) {
+                showDeleteDialog = true
+            }
             Box {
                 ClickableIcon(
                     imageVector = Icons.Default.MoreVert,
@@ -110,16 +117,6 @@ fun RecordingItem(
                         onClick = {
                             playerModel.stopPlaying()
                             showRenameDialog = true
-                            showDropDown = false
-                        }
-                    )
-                    DropdownMenuItem(
-                        text = {
-                            Text(stringResource(R.string.delete))
-                        },
-                        onClick = {
-                            playerModel.stopPlaying()
-                            showDeleteDialog = true
                             showDropDown = false
                         }
                     )

@@ -12,7 +12,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import app.suhasdissa.karaoke.enums.ThemeMode
 import app.suhasdissa.karaoke.ui.models.ThemeModel
-import app.suhasdissa.karaoke.ui.screens.RecorderView
 import app.suhasdissa.karaoke.ui.theme.RecordYouTheme
 
 class MainActivity : ComponentActivity() {
@@ -27,10 +26,9 @@ class MainActivity : ComponentActivity() {
                 }
             ) {
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
                 ) {
-                    RecorderView()
+                    KaraokeApp()
                 }
             }
         }
