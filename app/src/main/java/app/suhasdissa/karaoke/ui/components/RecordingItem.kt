@@ -1,5 +1,6 @@
 package app.suhasdissa.karaoke.ui.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
@@ -43,7 +44,12 @@ fun RecordingItem(
     }
 
     ElevatedCard(
-        modifier = Modifier.padding(vertical = 5.dp)
+        modifier = Modifier
+            .padding(vertical = 5.dp)
+            .clickable {
+                playerModel.stopPlaying()
+                IntentHelper.openFile(context, recordingFile)
+            }
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
