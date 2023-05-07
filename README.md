@@ -1,8 +1,8 @@
 <!-- ---------- Header ---------- -->
 <div align="center">
   <img width="200" height="200"src="ic_launcher_round.png">
-  <h1>Record You</h1>
-<p><a href="https://m3.material.io/">Material Design 3 (You)</a> voice and screen recorder app</p>
+  <h1>You-Tune</h1>
+<p><a href="https://m3.material.io/">Material Design 3 (You)</a> karaoke song recorder app</p>
 
 <!-- ---------- Badges ---------- -->
   <div align="center">
@@ -18,6 +18,9 @@
 <!-- ---------- Description ---------- -->
 ## Features
 
+- [x] Open Karaoke video from storage
+- [x] Load karaoke video from YouTube
+- [x] Realtime audio visualizer
 - [x] Material Design 3 (You)
 - [x] Dark and light theme
 
