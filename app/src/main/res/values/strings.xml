@@ -24,6 +24,9 @@
     <string name="options">Options</string>
     <string name="search">Search</string>
     <string name="clear_search">Clear Search</string>
+    <string name="open_karaoke_video">Open Karaoke Video</string>
+    <string name="record_audio">Record Audio</string>
+    <string name="show_recorded_files">Show Recorded Files</string>
 
     <!-- About -->
 
