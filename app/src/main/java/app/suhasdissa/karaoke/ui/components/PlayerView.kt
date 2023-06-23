@@ -35,7 +35,6 @@ fun PlayerView() {
         modifier = Modifier.fillMaxSize()
     ) {
         if (files.isNotEmpty()) {
-            Spacer(modifier = Modifier.height(70.dp))
             Text(
                 text = stringResource(R.string.recordings),
                 fontSize = MaterialTheme.typography.headlineMedium.fontSize
