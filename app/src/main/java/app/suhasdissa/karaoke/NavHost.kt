@@ -7,7 +7,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import app.suhasdissa.karaoke.ui.screens.AudioRecorderScreen
 import app.suhasdissa.karaoke.ui.screens.HomeScreen
-import app.suhasdissa.karaoke.ui.screens.PlayerScreen
 import app.suhasdissa.karaoke.ui.screens.VideoPlayerRecorderScreen
 import app.suhasdissa.karaoke.ui.screens.YoutubeSearchScreen
 import app.suhasdissa.karaoke.ui.screens.YtPlayerRecorderScreen
@@ -21,19 +20,7 @@ fun AppNavHost(
         navController = navController, startDestination = Home.route, modifier = modifier
     ) {
         composable(route = Home.route) {
-            HomeScreen(onPlayerClick = {
-                navController.navigateTo(PlayerScreen.route)
-            },
-                onRecordClick = { navController.navigateTo(AudioRecorderScreen.route) },
-                onVideoRecordClick = {
-                    navController.navigateTo(VideoPlayerRecorderScreen.route)
-                },
-                onYoutubeSearchClick = {
-                    navController.navigateTo(YoutubeSearchScreen.route)
-                })
-        }
-        composable(route = PlayerScreen.route) {
-            PlayerScreen()
+            HomeScreen(onNavigate = { navController.navigateTo(it.route) })
         }
         composable(route = AudioRecorderScreen.route) {
             AudioRecorderScreen()
@@ -61,44 +48,6 @@ fun AppNavHost(
                 )
             }
         }
-        /*
-        composable(route = FunnyVideoView.route) {
-            FunnyVideoScreen(onClickTextCard = { url ->
-                navController.navigateTo("${VideoPlayer.route}/$url")
-            })
-        }
-        composable(route = FeedView.route) {
-            FeedScreen(onClickTextCard = { text ->
-                navController.navigateTo("${TextViewer.route}/$text")
-            })
-        }
-        composable(
-            route = PhotoView.routeWithArgs, arguments = PhotoView.arguments
-        ) {
-            val imgurl = it.arguments?.getString("url")
-            if (imgurl != null) {
-                PhotoView(imgurl)
-            }
-
-        }
-
-        composable(
-            route = VideoPlayer.routeWithArgs, arguments = VideoPlayer.arguments
-        ) {
-            val url = it.arguments?.getString("url")
-            if (url != null) {
-                VideoPlayer(url)
-            }
-        }
-        composable(
-            route = TextViewer.routeWithArgs, arguments = TextViewer.arguments
-        ) {
-            val text = it.arguments?.getString("text")
-            if (text != null) {
-                TextView(text)
-            }
-        }
-        */
     }
 }
 
