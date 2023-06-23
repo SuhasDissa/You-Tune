@@ -22,6 +22,8 @@
 
     <!-- Settings -->
     <string name="options">Options</string>
+    <string name="search">Search</string>
+    <string name="clear_search">Clear Search</string>
 
     <!-- About -->
 

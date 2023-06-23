@@ -14,4 +14,7 @@ data class Items(
     @SerialName("title") var title: String = "",
     @SerialName("thumbnail") var thumbnail: String = "",
     @SerialName("duration") var duration: Int = 0
-)
+){
+    val id
+        get() = url.replace("/watch?v=", "")
+}
