@@ -6,7 +6,6 @@ import android.net.Uri
 import android.util.Log
 import android.widget.Toast
 import androidx.core.content.FileProvider
-import androidx.core.net.toUri
 import androidx.documentfile.provider.DocumentFile
 import app.suhasdissa.karaoke.R
 import java.io.File
@@ -45,13 +44,9 @@ object IntentHelper {
                 Log.e("using raw", rawFile.absolutePath)
                 FileProvider.getUriForFile(context, context.packageName + ".provider", rawFile)
             }
+
             else -> file.uri
         }
-    }
-
-    fun openHref(context: Context, url: String) {
-        val browserIntent = Intent(Intent.ACTION_VIEW, url.toUri())
-        startActivity(context, browserIntent)
     }
 
     private fun startActivity(context: Context, intent: Intent) {

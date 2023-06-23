@@ -1,4 +1,4 @@
-package app.suhasdissa.karaoke.ui.common
+package app.suhasdissa.karaoke.ui.components
 
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton

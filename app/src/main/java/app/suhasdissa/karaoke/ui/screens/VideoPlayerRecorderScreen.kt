@@ -3,7 +3,13 @@ package app.suhasdissa.karaoke.ui.screens
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -11,25 +17,25 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import app.suhasdissa.karaoke.backend.viewmodels.VideoPlayerViewModel
 import app.suhasdissa.karaoke.ui.components.AudioRecordController
 import app.suhasdissa.karaoke.ui.components.AudioVisualizer
 import app.suhasdissa.karaoke.ui.components.VideoPlayer
-import app.suhasdissa.karaoke.ui.models.VideoPlayerModel
 
 @Composable
 fun VideoPlayerRecorderScreen(
-    videoPlayerModel: VideoPlayerModel = viewModel()
+    videoPlayerViewModel: VideoPlayerViewModel = viewModel()
 ) {
 
     val pickVideo = rememberLauncherForActivityResult(
         ActivityResultContracts.GetContent()
     ) { videoUri ->
         if (videoUri != null) {
-            videoPlayerModel.vidUri = videoUri
+            videoPlayerViewModel.vidUri = videoUri
         }
     }
     LaunchedEffect(Unit) {
-        if (videoPlayerModel.vidUri == Uri.EMPTY) {
+        if (videoPlayerViewModel.vidUri == Uri.EMPTY) {
             pickVideo.launch("video/*")
         }
     }
@@ -41,14 +47,16 @@ fun VideoPlayerRecorderScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween
         ) {
-            if (videoPlayerModel.vidUri != Uri.EMPTY) {
-                Box(Modifier.heightIn(0.dp,250.dp)) {
-                    VideoPlayer(videoUri = videoPlayerModel.vidUri)
+            if (videoPlayerViewModel.vidUri != Uri.EMPTY) {
+                Box(Modifier.heightIn(0.dp, 250.dp)) {
+                    VideoPlayer(videoUri = videoPlayerViewModel.vidUri)
                 }
             }
-            AudioVisualizer(modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f))
+            AudioVisualizer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+            )
             AudioRecordController()
         }
     }

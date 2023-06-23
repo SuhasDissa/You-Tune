@@ -1,4 +1,4 @@
-package app.suhasdissa.karaoke.ui.models
+package app.suhasdissa.karaoke.backend.viewmodels
 
 import android.content.Context
 import android.media.MediaPlayer
@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.IOException
 
-class PlayerModel : ViewModel() {
+class PlayerViewModel : ViewModel() {
     private var player: MediaPlayer? = null
     val files = mutableStateListOf<DocumentFile>()
     private var onFinish: () -> Unit = {}

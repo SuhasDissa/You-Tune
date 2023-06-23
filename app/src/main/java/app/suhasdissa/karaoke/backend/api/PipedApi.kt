@@ -1,9 +1,8 @@
 package app.suhasdissa.karaoke.backend.api
 
-import app.suhasdissa.karaoke.backend.serializables.PipedSearchResult
-import app.suhasdissa.karaoke.backend.serializables.PipedVideoResponse
+import app.suhasdissa.karaoke.backend.models.PipedSearchResult
+import app.suhasdissa.karaoke.backend.models.PipedVideoResponse
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
@@ -14,7 +13,6 @@ import retrofit2.http.Query
 
 private val json = Json { ignoreUnknownKeys = true }
 
-@OptIn(ExperimentalSerializationApi::class)
 private val retrofit = Retrofit.Builder()
     .baseUrl("https://watchapi.whatever.social/")
     .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))

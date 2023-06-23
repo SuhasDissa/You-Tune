@@ -1,4 +1,4 @@
-package app.suhasdissa.karaoke.ui.models
+package app.suhasdissa.karaoke.backend.viewmodels
 
 import android.Manifest
 import android.content.*
@@ -11,12 +11,12 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import app.suhasdissa.karaoke.enums.RecorderState
+import app.suhasdissa.karaoke.backend.enums.RecorderState
 import app.suhasdissa.karaoke.util.PermissionHelper
 import app.suhasdissa.karaoke.util.PlayerHelper
 import app.suhasdissa.karaoke.util.StorageHelper
 
-class RecorderModel : ViewModel() {
+class RecorderViewModel : ViewModel() {
     private val audioPermission = arrayOf(Manifest.permission.RECORD_AUDIO)
     private var recorder: MediaRecorder? = null
 
@@ -77,6 +77,7 @@ class RecorderModel : ViewModel() {
         handler.postDelayed(this::updateAmplitude, 100)
         onStateChange(recorderState)
     }
+
     private fun updateAmplitude() {
         if (recorderState != RecorderState.ACTIVE) return
 
@@ -87,6 +88,7 @@ class RecorderModel : ViewModel() {
 
         handler.postDelayed(this::updateAmplitude, 100)
     }
+
     private fun updateTime() {
         if (recorderState != RecorderState.ACTIVE) return
         recordedTime++

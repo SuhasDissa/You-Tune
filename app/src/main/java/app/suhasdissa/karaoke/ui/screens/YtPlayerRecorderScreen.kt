@@ -1,6 +1,12 @@
 package app.suhasdissa.karaoke.ui.screens
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -9,16 +15,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.lifecycle.viewmodel.compose.viewModel
-import app.suhasdissa.karaoke.ui.components.*
-import app.suhasdissa.karaoke.ui.models.PipedStreamModel
+import app.suhasdissa.karaoke.backend.viewmodels.PipedStreamViewModel
+import app.suhasdissa.karaoke.ui.components.AudioRecordController
+import app.suhasdissa.karaoke.ui.components.AudioVisualizer
+import app.suhasdissa.karaoke.ui.components.ErrorScreen
+import app.suhasdissa.karaoke.ui.components.LoadingScreen
+import app.suhasdissa.karaoke.ui.components.VideoPlayer
 
 @Composable
 fun YtPlayerRecorderScreen(
     vidId: String,
-    pipedStreamModel: PipedStreamModel = viewModel()
+    pipedStreamViewModel: PipedStreamViewModel = viewModel()
 ) {
     LaunchedEffect(Unit) {
-        pipedStreamModel.getStreams(vidId)
+        pipedStreamViewModel.getStreams(vidId)
     }
     Scaffold { pV ->
         Column(
@@ -28,16 +38,18 @@ fun YtPlayerRecorderScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween
         ) {
-            when (val streamState = pipedStreamModel.state) {
-                is PipedStreamModel.VideoStreamState.Error -> {
+            when (val streamState = pipedStreamViewModel.state) {
+                is PipedStreamViewModel.VideoStreamState.Error -> {
                     ErrorScreen(
                         error = streamState.error,
-                        onRetry = { pipedStreamModel.getStreams(vidId) })
+                        onRetry = { pipedStreamViewModel.getStreams(vidId) })
                 }
-                is PipedStreamModel.VideoStreamState.Loading -> {
+
+                is PipedStreamViewModel.VideoStreamState.Loading -> {
                     LoadingScreen()
                 }
-                is PipedStreamModel.VideoStreamState.Success -> {
+
+                is PipedStreamViewModel.VideoStreamState.Success -> {
                     Box(Modifier.heightIn(0.dp, 250.dp)) {
                         if (streamState.response.hls != null) {
                             VideoPlayer(videoUri = streamState.response.hls!!.toUri())
@@ -45,9 +57,11 @@ fun YtPlayerRecorderScreen(
                             ErrorScreen(error = "Video Playback Error", onRetry = {})
                         }
                     }
-                    AudioVisualizer(modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f))
+                    AudioVisualizer(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f)
+                    )
                     AudioRecordController()
                 }
             }

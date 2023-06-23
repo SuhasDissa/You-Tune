@@ -22,11 +22,11 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import app.suhasdissa.karaoke.backend.serializables.Items
+import app.suhasdissa.karaoke.backend.models.Items
+import app.suhasdissa.karaoke.backend.viewmodels.PipedViewModel
 import app.suhasdissa.karaoke.ui.components.ErrorScreen
 import app.suhasdissa.karaoke.ui.components.InfoScreen
 import app.suhasdissa.karaoke.ui.components.LoadingScreen
-import app.suhasdissa.karaoke.ui.models.PipedModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import kotlinx.coroutines.delay
@@ -35,7 +35,7 @@ import kotlinx.coroutines.delay
 @Composable
 fun YoutubeSearchScreen(
     modifier: Modifier = Modifier,
-    pipedModel: PipedModel = viewModel(),
+    pipedViewModel: PipedViewModel = viewModel(),
     onClickVideoCard: (id: String) -> Unit
 ) {
     val search = remember { mutableStateOf(TextFieldValue("")) }
@@ -53,7 +53,7 @@ fun YoutubeSearchScreen(
                 onValueChange = {
                     search.value = it
                     if (search.value.text.length >= 3) {
-                        pipedModel.getSuggestions(search.value.text)
+                        pipedViewModel.getSuggestions(search.value.text)
                     }
                 },
                 modifier
@@ -67,17 +67,17 @@ fun YoutubeSearchScreen(
             Button(onClick = {
                 keyboard?.hide()
                 if (search.value.text.isNotEmpty()) {
-                    pipedModel.searchPiped(search.value.text)
+                    pipedViewModel.searchPiped(search.value.text)
                 }
-                pipedModel.suggestions = arrayListOf()
+                pipedViewModel.suggestions = arrayListOf()
             }) {
                 Text("Search")
             }
         }
 
-        if (search.value.text.isNotEmpty() && pipedModel.suggestions.isNotEmpty()) {
+        if (search.value.text.isNotEmpty() && pipedViewModel.suggestions.isNotEmpty()) {
             LazyColumn(Modifier.fillMaxWidth()) {
-                items(items = pipedModel.suggestions) { suggestion ->
+                items(items = pipedViewModel.suggestions) { suggestion ->
                     Box(
                         Modifier
                             .fillMaxWidth()
@@ -89,21 +89,24 @@ fun YoutubeSearchScreen(
             }
         }
 
-        when (val searchState = pipedModel.state) {
-            is PipedModel.PipedSearchState.Loading -> {
+        when (val searchState = pipedViewModel.state) {
+            is PipedViewModel.PipedSearchState.Loading -> {
                 LoadingScreen()
             }
-            is PipedModel.PipedSearchState.Error -> {
+
+            is PipedViewModel.PipedSearchState.Error -> {
                 ErrorScreen(error = searchState.error, onRetry = {
                     if (search.value.text.isNotEmpty()) {
-                        pipedModel.searchPiped(search.value.text)
+                        pipedViewModel.searchPiped(search.value.text)
                     }
                 })
             }
-            is PipedModel.PipedSearchState.Success -> {
+
+            is PipedViewModel.PipedSearchState.Success -> {
                 VideoList(items = searchState.items, onClickVideoCard = { onClickVideoCard(it) })
             }
-            is PipedModel.PipedSearchState.Empty -> {
+
+            is PipedViewModel.PipedSearchState.Empty -> {
                 InfoScreen(info = "Search For Video")
             }
         }

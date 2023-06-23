@@ -24,6 +24,7 @@ object StorageHelper {
                 val dir = context.getExternalFilesDir(null) ?: context.filesDir
                 DocumentFile.fromFile(dir)
             }
+
             else -> DocumentFile.fromTreeUri(context, Uri.parse(prefDir))
         }
         return audioDir!!

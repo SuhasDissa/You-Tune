@@ -8,13 +8,13 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.drawscope.translate
 import androidx.lifecycle.viewmodel.compose.viewModel
-import app.suhasdissa.karaoke.ui.models.RecorderModel
+import app.suhasdissa.karaoke.backend.viewmodels.RecorderViewModel
 
 @Composable
 fun AudioVisualizer(
     modifier: Modifier = Modifier
 ) {
-    val viewModel: RecorderModel = viewModel()
+    val viewModel: RecorderViewModel = viewModel()
     val maxAmplitude = 3000
     val primary = MaterialTheme.colorScheme.primary
     Canvas(modifier = modifier) {

@@ -1,4 +1,4 @@
-package app.suhasdissa.karaoke.backend.serializables
+package app.suhasdissa.karaoke.backend.models
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

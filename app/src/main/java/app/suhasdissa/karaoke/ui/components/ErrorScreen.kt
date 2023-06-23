@@ -11,7 +11,11 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun ErrorScreen(error: String, onRetry: () -> Unit) {
-    Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+    Column(
+        Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
         Text(error)
         Button(onClick = { onRetry() }) {
             Text("Retry")

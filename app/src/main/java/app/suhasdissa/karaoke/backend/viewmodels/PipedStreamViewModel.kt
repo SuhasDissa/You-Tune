@@ -1,4 +1,4 @@
-package app.suhasdissa.karaoke.ui.models
+package app.suhasdissa.karaoke.backend.viewmodels
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -6,10 +6,10 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.suhasdissa.karaoke.backend.api.PipedApi
-import app.suhasdissa.karaoke.backend.serializables.PipedVideoResponse
+import app.suhasdissa.karaoke.backend.models.PipedVideoResponse
 import kotlinx.coroutines.launch
 
-class PipedStreamModel : ViewModel() {
+class PipedStreamViewModel : ViewModel() {
     sealed interface VideoStreamState {
         data class Success(val response: PipedVideoResponse) : VideoStreamState
         data class Error(val error: String) : VideoStreamState

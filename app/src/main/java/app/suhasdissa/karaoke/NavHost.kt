@@ -5,7 +5,12 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import app.suhasdissa.karaoke.ui.screens.*
+import app.suhasdissa.karaoke.ui.screens.AudioRecorderScreen
+import app.suhasdissa.karaoke.ui.screens.HomeScreen
+import app.suhasdissa.karaoke.ui.screens.PlayerScreen
+import app.suhasdissa.karaoke.ui.screens.VideoPlayerRecorderScreen
+import app.suhasdissa.karaoke.ui.screens.YoutubeSearchScreen
+import app.suhasdissa.karaoke.ui.screens.YtPlayerRecorderScreen
 
 
 @Composable

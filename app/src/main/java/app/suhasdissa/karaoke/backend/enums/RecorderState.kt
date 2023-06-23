@@ -1,4 +1,4 @@
-package app.suhasdissa.karaoke.enums
+package app.suhasdissa.karaoke.backend.enums
 
 enum class RecorderState {
     IDLE,

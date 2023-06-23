@@ -9,14 +9,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.viewmodel.compose.viewModel
-import app.suhasdissa.karaoke.enums.RecorderState
-import app.suhasdissa.karaoke.ui.models.RecorderModel
+import app.suhasdissa.karaoke.backend.enums.RecorderState
+import app.suhasdissa.karaoke.backend.viewmodels.RecorderViewModel
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.ui.StyledPlayerView
 
 @Composable
-fun VideoPlayer(videoUri: Uri, recorderModel: RecorderModel = viewModel()) {
+fun VideoPlayer(videoUri: Uri, recorderViewModel: RecorderViewModel = viewModel()) {
     val context = LocalContext.current
     val exoPlayer = remember(context) {
         ExoPlayer.Builder(context)
@@ -31,13 +31,14 @@ fun VideoPlayer(videoUri: Uri, recorderModel: RecorderModel = viewModel()) {
             }
     }
 
-    recorderModel.onStateChange = {
+    recorderViewModel.onStateChange = {
         when (it) {
             RecorderState.ACTIVE -> exoPlayer.play()
             RecorderState.IDLE -> {
                 exoPlayer.pause()
                 exoPlayer.seekTo(0)
             }
+
             RecorderState.PAUSED -> exoPlayer.pause()
         }
     }

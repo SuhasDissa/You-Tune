@@ -1,4 +1,4 @@
-package app.suhasdissa.karaoke.ui.dialogs
+package app.suhasdissa.karaoke.ui.components
 
 import androidx.annotation.StringRes
 import androidx.compose.material3.AlertDialog
@@ -6,7 +6,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import app.suhasdissa.karaoke.R
-import app.suhasdissa.karaoke.ui.common.DialogButton
 
 @Composable
 fun ConfirmationDialog(
