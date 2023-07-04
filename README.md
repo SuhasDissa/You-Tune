@@ -2,7 +2,7 @@
 <div align="center">
   <img width="200" height="200"src="ic_launcher_round.png">
   <h1>You-Tune</h1>
-<p><a href="https://m3.material.io/">Material Design 3 (You)</a> karaoke song recorder app</p>
+<p>Material Design 3 (You) karaoke song recorder app based on <a href="https://github.com/Bnyro/RecordYou">Bnyro/RecordYou</a></p>
 
 <!-- ---------- Badges ---------- -->
   <div align="center">
