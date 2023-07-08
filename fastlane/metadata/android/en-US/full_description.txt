@@ -1,7 +1,4 @@
-<i>Record You</i> is a voice and screen recorder app built with <a href="https://m3.material.io/">Material Design 3 (You)</a>.
+YouTune is a karaoke app built with Material You design.
 
-It supports multiple audio formats and codecs, such as M4A, AAC and OPUS.
-
-<i>Record You</i> uses SAF (Storage Access Framework), thus it doesn't require any storage permissons.
-
-It doesn't have any dependencies apart from the Android base and Material design libraries, therefore the app is very lightweight.
+You can open local video files or play karaoke videos from YouTube directly within this app.
+Or else you can just record your voice

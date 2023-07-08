@@ -15,6 +15,17 @@
 </div>
 </div>
 
+---
+
+<details>
+  <summary>  Screenshots</summary>
+<p align="center">
+  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1.png" width="30%" />
+  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/2.png" width="30%" />
+  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/3.png" width="30%" />
+</p>
+</details>
+
 <!-- ---------- Description ---------- -->
 ## Features
 
@@ -27,8 +38,6 @@
 <!-- ---------- Download ---------- -->
 ## Download
 
-<div align="center">
-
-[<img src="https://raw.githubusercontent.com/vadret/android/master/assets/get-github.png" alt="Get it on GitHub" height="80">](https://github.com/SuhasDissa/You-Tune/releases)
-
-</div>
+[<img src="https://github.com/machiav3lli/oandbackupx/blob/034b226cea5c1b30eb4f6a6f313e4dadcbb0ece4/badge_github.png"
+    alt="Get it on GitHub"
+    height="80">](https://github.com/SuhasDissa/You-Tune/releases)
