@@ -1,14 +1,16 @@
 package app.suhasdissa.karaoke.ui.screens
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Mic
@@ -17,7 +19,6 @@ import androidx.compose.material.icons.filled.VideoFile
 import androidx.compose.material3.Card
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -33,6 +34,7 @@ import app.suhasdissa.karaoke.Destination
 import app.suhasdissa.karaoke.R
 import app.suhasdissa.karaoke.VideoPlayerRecorderScreen
 import app.suhasdissa.karaoke.YoutubeSearchScreen
+import app.suhasdissa.karaoke.ui.components.IconCardButton
 import app.suhasdissa.karaoke.ui.components.PlayerView
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -40,21 +42,7 @@ import app.suhasdissa.karaoke.ui.components.PlayerView
 fun HomeScreen(
     onNavigate: (destination: Destination) -> Unit
 ) {
-    Scaffold(floatingActionButton = {
-        Column {
-            ExtendedFloatingActionButton(
-                text = { Text(stringResource(id = R.string.open_karaoke_video)) },
-                icon = { Icon(Icons.Default.VideoFile, null) },
-                onClick = { onNavigate(VideoPlayerRecorderScreen) }
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            ExtendedFloatingActionButton(
-                text = { Text(stringResource(id = R.string.record_audio)) },
-                icon = { Icon(Icons.Default.Mic, null) },
-                onClick = { onNavigate(AudioRecorderScreen) }
-            )
-        }
-    }, topBar = {
+    Scaffold(topBar = {
         CenterAlignedTopAppBar(title = {
             Card(
                 modifier = Modifier
@@ -94,6 +82,27 @@ fun HomeScreen(
                 )
                 .fillMaxSize()
         ) {
+            LazyVerticalGrid(
+                modifier = Modifier.fillMaxWidth(),
+                columns = GridCells.Adaptive(300.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                item {
+                    IconCardButton(
+                        onClick = { onNavigate(VideoPlayerRecorderScreen) },
+                        text = stringResource(id = R.string.open_karaoke_video),
+                        icon = Icons.Default.VideoFile
+                    )
+                }
+                item {
+                    IconCardButton(
+                        onClick = { onNavigate(AudioRecorderScreen) },
+                        text = stringResource(id = R.string.record_audio),
+                        icon = Icons.Default.Mic
+                    )
+                }
+            }
             PlayerView()
         }
     }

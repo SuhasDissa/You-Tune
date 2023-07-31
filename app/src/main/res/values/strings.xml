@@ -24,10 +24,11 @@
     <string name="options">Options</string>
     <string name="search">Search</string>
     <string name="clear_search">Clear Search</string>
-    <string name="open_karaoke_video">Open Video</string>
+    <string name="open_karaoke_video">Open Video file</string>
     <string name="record_audio">Record Audio</string>
     <string name="show_recorded_files">Show Recorded Files</string>
     <string name="get_started">Get started by searching for a video or opening a video file.</string>
+    <string name="search_youtube_video">Search Youtube video</string>
 
     <!-- About -->
 
