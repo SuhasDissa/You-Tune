@@ -28,7 +28,6 @@ fun AudioRecorderScreen() {
                     .weight(1f)
             )
             AudioRecordController()
-
         }
     }
 }

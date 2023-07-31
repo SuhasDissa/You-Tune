@@ -8,7 +8,6 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import app.suhasdissa.karaoke.AppNavHost
 
-
 @Composable
 fun KaraokeApp() {
     val navController = rememberNavController()

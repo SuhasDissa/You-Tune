@@ -42,7 +42,8 @@ fun YtPlayerRecorderScreen(
                 is PipedStreamViewModel.VideoStreamState.Error -> {
                     ErrorScreen(
                         error = streamState.error,
-                        onRetry = { pipedStreamViewModel.getStreams(vidId) })
+                        onRetry = { pipedStreamViewModel.getStreams(vidId) }
+                    )
                 }
 
                 is PipedStreamViewModel.VideoStreamState.Loading -> {
@@ -65,8 +66,6 @@ fun YtPlayerRecorderScreen(
                     AudioRecordController()
                 }
             }
-
-
         }
     }
 }

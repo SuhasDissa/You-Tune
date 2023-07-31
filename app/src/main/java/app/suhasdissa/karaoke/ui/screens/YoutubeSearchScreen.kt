@@ -137,7 +137,8 @@ fun YoutubeSearchScreen(
                 is PipedViewModel.PipedSearchState.Success -> {
                     VideoList(
                         items = searchState.items,
-                        onClickVideoCard = { onClickVideoCard(it) })
+                        onClickVideoCard = { onClickVideoCard(it) }
+                    )
                 }
 
                 is PipedViewModel.PipedSearchState.Empty -> {
@@ -208,7 +209,8 @@ fun VideoList(items: ArrayList<Items>, onClickVideoCard: (url: String) -> Unit) 
                 item.duration,
                 onClickVideoCard = {
                     onClickVideoCard(item.id)
-                })
+                }
+            )
         }
     }
 }

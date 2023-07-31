@@ -3,7 +3,6 @@ package app.suhasdissa.karaoke
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 
-
 interface Destination {
     val route: String
 }

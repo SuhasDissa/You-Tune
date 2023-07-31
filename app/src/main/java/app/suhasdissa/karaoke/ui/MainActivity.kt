@@ -16,7 +16,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             RecordYouTheme {
                 Surface(
-                    modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
                 ) {
                     KaraokeApp()
                     window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)

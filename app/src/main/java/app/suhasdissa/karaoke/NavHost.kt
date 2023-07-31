@@ -11,13 +11,15 @@ import app.suhasdissa.karaoke.ui.screens.VideoPlayerRecorderScreen
 import app.suhasdissa.karaoke.ui.screens.YoutubeSearchScreen
 import app.suhasdissa.karaoke.ui.screens.YtPlayerRecorderScreen
 
-
 @Composable
 fun AppNavHost(
-    navController: NavHostController, modifier: Modifier = Modifier
+    navController: NavHostController,
+    modifier: Modifier = Modifier
 ) {
     NavHost(
-        navController = navController, startDestination = Home.route, modifier = modifier
+        navController = navController,
+        startDestination = Home.route,
+        modifier = modifier
     ) {
         composable(route = Home.route) {
             HomeScreen(onNavigate = { navController.navigateTo(it.route) })
@@ -33,9 +35,10 @@ fun AppNavHost(
         composable(
             route = YoutubeSearchScreen.route
         ) {
-            YoutubeSearchScreen(onClickVideoCard = { navController.navigateTo("${YtPlayerRecorderScreen.route}/$it") })
+            YoutubeSearchScreen(onClickVideoCard = {
+                navController.navigateTo("${YtPlayerRecorderScreen.route}/$it")
+            })
         }
-
 
         composable(
             route = YtPlayerRecorderScreen.routeWithArgs,

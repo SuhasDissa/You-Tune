@@ -45,12 +45,14 @@ fun HomeScreen(
             ExtendedFloatingActionButton(
                 text = { Text(stringResource(id = R.string.open_karaoke_video)) },
                 icon = { Icon(Icons.Default.VideoFile, null) },
-                onClick = { onNavigate(VideoPlayerRecorderScreen) })
+                onClick = { onNavigate(VideoPlayerRecorderScreen) }
+            )
             Spacer(modifier = Modifier.height(16.dp))
             ExtendedFloatingActionButton(
                 text = { Text(stringResource(id = R.string.record_audio)) },
                 icon = { Icon(Icons.Default.Mic, null) },
-                onClick = { onNavigate(AudioRecorderScreen) })
+                onClick = { onNavigate(AudioRecorderScreen) }
+            )
         }
     }, topBar = {
         CenterAlignedTopAppBar(title = {

@@ -26,7 +26,6 @@ import app.suhasdissa.karaoke.ui.components.VideoPlayer
 fun VideoPlayerRecorderScreen(
     videoPlayerViewModel: VideoPlayerViewModel = viewModel()
 ) {
-
     val pickVideo = rememberLauncherForActivityResult(
         ActivityResultContracts.GetContent()
     ) { videoUri ->

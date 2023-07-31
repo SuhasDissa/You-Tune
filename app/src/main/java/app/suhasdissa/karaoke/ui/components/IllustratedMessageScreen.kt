@@ -70,6 +70,7 @@ fun IllustratedMessageScreen(
 @Preview(showBackground = true)
 private fun IllustratedMsgScreenPreview() {
     IllustratedMessageScreen(
-        image = R.drawable.ic_launcher_foreground, message = R.string.get_started
+        image = R.drawable.ic_launcher_foreground,
+        message = R.string.get_started
     )
 }

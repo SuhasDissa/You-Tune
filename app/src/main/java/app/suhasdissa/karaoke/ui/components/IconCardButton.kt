@@ -20,7 +20,8 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun IconCardButton(onClick: () -> Unit, text: String, icon: ImageVector) {
     ElevatedCard(
-        Modifier.clickable { onClick() }) {
+        Modifier.clickable { onClick() }
+    ) {
         Row(
             Modifier
                 .fillMaxWidth()

@@ -12,5 +12,4 @@ object Preferences {
     fun init(context: Context) {
         prefs = context.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE)
     }
-
 }

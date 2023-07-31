@@ -3,16 +3,15 @@ package app.suhasdissa.karaoke.backend.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-
 @Serializable
 data class PipedVideoResponse(
     @SerialName("title") var title: String = "",
     @SerialName("hls") var hls: String? = null,
     @SerialName("dash") var dash: String? = null,
     @SerialName("audioStreams") var audioStreams: ArrayList<AudioStreams> = arrayListOf(),
-    @SerialName("videoStreams") var videoStreams: ArrayList<VideoStreams> = arrayListOf(),
+    @SerialName("videoStreams") var videoStreams: ArrayList<VideoStreams> = arrayListOf()
 
-    )
+)
 
 @Serializable
 data class AudioStreams(

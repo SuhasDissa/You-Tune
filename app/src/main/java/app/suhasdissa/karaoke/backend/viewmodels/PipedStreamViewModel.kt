@@ -18,7 +18,6 @@ class PipedStreamViewModel : ViewModel() {
 
     var state: VideoStreamState by mutableStateOf(VideoStreamState.Loading)
 
-
     fun getStreams(vidId: String) {
         viewModelScope.launch {
             state = VideoStreamState.Loading
