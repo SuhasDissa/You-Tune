@@ -16,10 +16,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.VideoFile
+import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material3.Card
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -32,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import app.suhasdissa.karaoke.AudioRecorderScreen
 import app.suhasdissa.karaoke.Destination
 import app.suhasdissa.karaoke.R
+import app.suhasdissa.karaoke.Settings
 import app.suhasdissa.karaoke.VideoPlayerRecorderScreen
 import app.suhasdissa.karaoke.YoutubeSearchScreen
 import app.suhasdissa.karaoke.ui.components.IconCardButton
@@ -71,6 +74,13 @@ fun HomeScreen(
                         contentDescription = null
                     )
                 }
+            }
+        }, actions = {
+            IconButton(onClick = { onNavigate(Settings) }) {
+                Icon(
+                    imageVector = Icons.Rounded.Settings,
+                    contentDescription = stringResource(id = R.string.settings)
+                )
             }
         })
     }) { paddingValues ->

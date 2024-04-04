@@ -28,3 +28,7 @@ object YtPlayerRecorderScreen : Destination {
     val routeWithArgs = "$route/{id}"
     val arguments = listOf(navArgument("id") { type = NavType.StringType })
 }
+
+object Settings : Destination {
+    override val route = "settings"
+}

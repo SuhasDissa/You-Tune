@@ -2,7 +2,16 @@ package app.suhasdissa.karaoke.ui.screens
 
 import android.text.format.DateUtils
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -10,7 +19,14 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material3.*
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -47,7 +63,6 @@ fun YoutubeSearchScreen(
     pipedViewModel: PipedViewModel = viewModel(),
     onClickVideoCard: (id: String) -> Unit
 ) {
-    var search by remember { mutableStateOf("") }
     val focusRequester = remember { FocusRequester() }
     val keyboard = LocalSoftwareKeyboardController.current
     LaunchedEffect(focusRequester) {
@@ -59,12 +74,12 @@ fun YoutubeSearchScreen(
         var expanded by remember { mutableStateOf(false) }
 
         TextField(
-            value = search,
+            value = pipedViewModel.search,
             onValueChange = {
-                search = it
+                pipedViewModel.search = it
                 expanded = true
-                if (search.length >= 3) {
-                    pipedViewModel.getSuggestions(search)
+                if (it.length >= 3) {
+                    pipedViewModel.getSuggestions()
                 }
             },
             modifier
@@ -79,12 +94,10 @@ fun YoutubeSearchScreen(
             keyboardActions = KeyboardActions(onSearch = {
                 keyboard?.hide()
                 expanded = false
-                if (search.isNotEmpty()) {
-                    pipedViewModel.searchPiped(search)
-                }
+                pipedViewModel.searchPiped()
             }),
             trailingIcon = {
-                IconButton(onClick = { search = "" }) {
+                IconButton(onClick = { pipedViewModel.search = "" }) {
                     Icon(
                         Icons.Default.Clear,
                         contentDescription = stringResource(R.string.clear_search)
@@ -109,12 +122,10 @@ fun YoutubeSearchScreen(
                                     style = MaterialTheme.typography.bodyLarge
                                 )
                             }, onClick = {
-                                search = suggestion
+                                pipedViewModel.search = suggestion
                                 keyboard?.hide()
                                 expanded = false
-                                if (search.isNotEmpty()) {
-                                    pipedViewModel.searchPiped(search)
-                                }
+                                pipedViewModel.searchPiped()
                             })
                         }
                     }
@@ -128,9 +139,7 @@ fun YoutubeSearchScreen(
 
                 is PipedViewModel.PipedSearchState.Error -> {
                     ErrorScreen(error = searchState.error, onRetry = {
-                        if (search.isNotEmpty()) {
-                            pipedViewModel.searchPiped(search)
-                        }
+                        pipedViewModel.searchPiped()
                     })
                 }
 

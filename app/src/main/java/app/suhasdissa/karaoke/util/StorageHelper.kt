@@ -2,10 +2,9 @@ package app.suhasdissa.karaoke.util
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.net.Uri
 import androidx.documentfile.provider.DocumentFile
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Calendar
 
 object StorageHelper {
     @SuppressLint("SimpleDateFormat")
@@ -18,15 +17,7 @@ object StorageHelper {
     }
 
     fun getOutputDir(context: Context): DocumentFile {
-        val prefDir = Preferences.prefs.getString(Preferences.targetFolderKey, "")
-        val audioDir = when {
-            prefDir.isNullOrBlank() -> {
-                val dir = context.getExternalFilesDir(null) ?: context.filesDir
-                DocumentFile.fromFile(dir)
-            }
-
-            else -> DocumentFile.fromTreeUri(context, Uri.parse(prefDir))
-        }
-        return audioDir!!
+        val dir = context.getExternalFilesDir(null) ?: context.filesDir
+        return DocumentFile.fromFile(dir)
     }
 }

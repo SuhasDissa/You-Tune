@@ -1,47 +1,46 @@
 package app.suhasdissa.karaoke.backend.api
 
+import app.suhasdissa.karaoke.backend.models.PipedInstance
 import app.suhasdissa.karaoke.backend.models.PipedSearchResult
 import app.suhasdissa.karaoke.backend.models.PipedVideoResponse
+import app.suhasdissa.karaoke.util.Pref
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
 import retrofit2.http.GET
-import retrofit2.http.Headers
 import retrofit2.http.Path
 import retrofit2.http.Query
 
 private val json = Json { ignoreUnknownKeys = true }
 
 private val retrofit = Retrofit.Builder()
-    .baseUrl("https://watchapi.whatever.social/")
+    .baseUrl("https://pipedapi.kavin.rocks/")
     .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
     .build()
 
 interface ApiService {
-    @Headers(
-        "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36"
-    )
-    @GET("search?filter=video")
+    @GET("https://{instance}/search")
     suspend fun searchPiped(
+        @Path("instance") instance: String = Pref.currentInstance.netLoc,
+        @Query("filter") filter: String = "videos",
         @Query("q") query: String
     ): PipedSearchResult
 
-    @Headers(
-        "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36"
-    )
-    @GET("streams/{videoid}")
+    @GET("https://{instance}/streams/{videoid}")
     suspend fun getStreams(
+        @Path("instance") instance: String = Pref.currentInstance.netLoc,
         @Path("videoid") vidId: String
     ): PipedVideoResponse
 
-    @Headers(
-        "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36"
-    )
-    @GET("suggestions")
+    @GET("https://{instance}/suggestions")
     suspend fun getSuggestions(
+        @Path("instance") instance: String = Pref.currentInstance.netLoc,
         @Query("query") query: String
     ): List<String>
+
+    @GET("https://piped-instances.kavin.rocks")
+    suspend fun getInstanceList(): List<PipedInstance>
 }
 
 object PipedApi {

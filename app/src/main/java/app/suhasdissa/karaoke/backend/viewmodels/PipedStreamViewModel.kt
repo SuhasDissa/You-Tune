@@ -23,7 +23,7 @@ class PipedStreamViewModel : ViewModel() {
             state = VideoStreamState.Loading
             state = try {
                 VideoStreamState.Success(
-                    PipedApi.retrofitService.getStreams(vidId)
+                    PipedApi.retrofitService.getStreams(vidId = vidId)
                 )
             } catch (e: Exception) {
                 VideoStreamState.Error(e.toString())

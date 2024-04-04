@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import app.suhasdissa.karaoke.ui.screens.AudioRecorderScreen
 import app.suhasdissa.karaoke.ui.screens.HomeScreen
+import app.suhasdissa.karaoke.ui.screens.SettingsScreen
 import app.suhasdissa.karaoke.ui.screens.VideoPlayerRecorderScreen
 import app.suhasdissa.karaoke.ui.screens.YoutubeSearchScreen
 import app.suhasdissa.karaoke.ui.screens.YtPlayerRecorderScreen
@@ -50,6 +51,12 @@ fun AppNavHost(
                     vidId = vidId
                 )
             }
+        }
+
+        composable(
+            route = Settings.route
+        ) {
+            SettingsScreen()
         }
     }
 }

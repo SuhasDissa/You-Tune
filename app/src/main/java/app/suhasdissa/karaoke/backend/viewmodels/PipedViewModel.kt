@@ -1,5 +1,8 @@
 package app.suhasdissa.karaoke.backend.viewmodels
 
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -20,20 +23,37 @@ class PipedViewModel : ViewModel() {
     var state: PipedSearchState by mutableStateOf(PipedSearchState.Empty)
     var suggestions: List<String> by mutableStateOf(arrayListOf())
 
-    fun getSuggestions(query: String) {
-        viewModelScope.launch {
-            runCatching {
-                suggestions = PipedApi.retrofitService.getSuggestions(query)
-            }
-        }
+    var search by mutableStateOf("")
+
+    fun getSuggestions() {
+        if (search.length < 3) return
+        val insertedTextTemp = search
+        Handler(
+            Looper.getMainLooper()
+        ).postDelayed(
+            {
+                if (insertedTextTemp == search) {
+                    viewModelScope.launch {
+                        runCatching {
+                            suggestions =
+                                PipedApi.retrofitService.getSuggestions(query = search).take(6)
+                        }
+                    }
+                }
+            },
+            500L
+        )
     }
 
-    fun searchPiped(query: String) {
+    fun searchPiped() {
+        if (search.isEmpty()) return;
         viewModelScope.launch {
             state = PipedSearchState.Loading
             state = try {
+                val result = PipedApi.retrofitService.searchPiped(query = "$search karaoke")
+                Log.d("Result", result.toString())
                 PipedSearchState.Success(
-                    PipedApi.retrofitService.searchPiped("$query karaoke").items
+                    result.items
                 )
             } catch (e: Exception) {
                 PipedSearchState.Error(e.toString())
