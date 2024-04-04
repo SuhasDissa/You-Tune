@@ -32,6 +32,8 @@
     <string name="select_server">Select Server</string>
     <string name="settings">Settings</string>
     <string name="change_server">Change Server</string>
+    <string name="network_settings">Network Settings</string>
+    <string name="retry">Retry</string>
 
     <!-- About -->
 

@@ -2,7 +2,6 @@ package app.suhasdissa.karaoke.backend.viewmodels
 
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -50,10 +49,8 @@ class PipedViewModel : ViewModel() {
         viewModelScope.launch {
             state = PipedSearchState.Loading
             state = try {
-                val result = PipedApi.retrofitService.searchPiped(query = "$search karaoke")
-                Log.d("Result", result.toString())
                 PipedSearchState.Success(
-                    result.items
+                    PipedApi.retrofitService.searchPiped(query = "$search karaoke").items
                 )
             } catch (e: Exception) {
                 PipedSearchState.Error(e.toString())

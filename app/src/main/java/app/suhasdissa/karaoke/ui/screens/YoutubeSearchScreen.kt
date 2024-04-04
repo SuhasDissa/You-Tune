@@ -61,7 +61,8 @@ import kotlinx.coroutines.delay
 fun YoutubeSearchScreen(
     modifier: Modifier = Modifier,
     pipedViewModel: PipedViewModel = viewModel(),
-    onClickVideoCard: (id: String) -> Unit
+    onClickVideoCard: (id: String) -> Unit,
+    onClickSettings: () -> Unit,
 ) {
     val focusRequester = remember { FocusRequester() }
     val keyboard = LocalSoftwareKeyboardController.current
@@ -140,7 +141,7 @@ fun YoutubeSearchScreen(
                 is PipedViewModel.PipedSearchState.Error -> {
                     ErrorScreen(error = searchState.error, onRetry = {
                         pipedViewModel.searchPiped()
-                    })
+                    }, onSettings = { onClickSettings.invoke() })
                 }
 
                 is PipedViewModel.PipedSearchState.Success -> {

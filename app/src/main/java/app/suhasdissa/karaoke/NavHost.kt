@@ -38,6 +38,8 @@ fun AppNavHost(
         ) {
             YoutubeSearchScreen(onClickVideoCard = {
                 navController.navigateTo("${YtPlayerRecorderScreen.route}/$it")
+            }, onClickSettings = {
+                navController.navigateTo(Settings.route)
             })
         }
 
@@ -48,7 +50,9 @@ fun AppNavHost(
             val vidId = it.arguments?.getString("id")
             if (vidId != null) {
                 YtPlayerRecorderScreen(
-                    vidId = vidId
+                    vidId = vidId, onClickSettings = {
+                        navController.navigateTo(Settings.route)
+                    }
                 )
             }
         }

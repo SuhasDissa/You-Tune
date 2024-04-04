@@ -25,6 +25,7 @@ import app.suhasdissa.karaoke.ui.components.VideoPlayer
 @Composable
 fun YtPlayerRecorderScreen(
     vidId: String,
+    onClickSettings: () -> Unit,
     pipedStreamViewModel: PipedStreamViewModel = viewModel()
 ) {
     LaunchedEffect(Unit) {
@@ -42,7 +43,8 @@ fun YtPlayerRecorderScreen(
                 is PipedStreamViewModel.VideoStreamState.Error -> {
                     ErrorScreen(
                         error = streamState.error,
-                        onRetry = { pipedStreamViewModel.getStreams(vidId) }
+                        onRetry = { pipedStreamViewModel.getStreams(vidId) },
+                        onSettings = { onClickSettings.invoke() }
                     )
                 }
 
@@ -55,7 +57,10 @@ fun YtPlayerRecorderScreen(
                         if (streamState.response.hls != null) {
                             VideoPlayer(videoUri = streamState.response.hls!!.toUri())
                         } else {
-                            ErrorScreen(error = "Video Playback Error", onRetry = {})
+                            ErrorScreen(
+                                error = "Video Playback Error",
+                                onRetry = {},
+                                onSettings = { onClickSettings.invoke() })
                         }
                     }
                     AudioVisualizer(
